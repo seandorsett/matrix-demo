@@ -5,7 +5,7 @@ jobs:
   test:
     runs-on: ${{ matrix.os }}
     strategy:
-      fail-fast: false           # attendees will toggle this
+      fail-fast: true           # attendees will toggle this
       max-parallel: 2            # attendees will tweak this
       matrix:
         os: [ubuntu-latest, windows-latest]
@@ -23,6 +23,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
+      - name: Temporary failure
+        run: exit 1   # intentional break          
       - name: Simulate experimental error
         if: ${{ matrix.experimental }}
         run: echo "Simulated failure" >&2 && exit 1
