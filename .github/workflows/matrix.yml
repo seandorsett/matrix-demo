@@ -1,0 +1,37 @@
+name: Matrix Mastery
+on: [push, workflow_dispatch]
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false           # attendees will toggle this
+      max-parallel: 2            # attendees will tweak this
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        node: [18, 20]
+        experimental: [false]
+        include:
+          - os: ubuntu-latest
+            node: 22
+            experimental: true      # fails on purpose
+        exclude: []                 # attendees add exclusions here
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Simulate experimental error
+        if: ${{ matrix.experimental }}
+        run: echo "Simulated failure" >&2 && exit 1
+        continue-on-error: true
+      - name: Run tests
+        run: npm test
+
+  summarize:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Report
+        run: echo "Demo complete – check job results above."
+
