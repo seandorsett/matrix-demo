@@ -15,7 +15,9 @@ jobs:
           - os: ubuntu-latest
             node: 22
             experimental: true      # fails on purpose
-        exclude: []                 # attendees add exclusions here
+        exclude:                  # attendees add exclusions here
+          - os: ubuntu-latest
+            node: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
