@@ -22,9 +22,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node }}
-      - name: Temporary failure
-        run: exit 1   # intentional break          
+          node-version: ${{ matrix.node }}     
       - name: Simulate experimental error
         if: ${{ matrix.experimental }}
         run: echo "Simulated failure" >&2 && exit 1
